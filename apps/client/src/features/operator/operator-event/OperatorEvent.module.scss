@@ -1,0 +1,145 @@
+@use '@/theme/viewerDefs' as *;
+@import '../Operator.module.scss';
+
+.event {
+  opacity: 1;
+  border-top: 1px solid $white-1;
+  padding-right: 0.5rem;
+  color: $white-90;
+  background-color: $viewer-card-bg-color;
+
+  display: grid;
+  align-items: center;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 1.5rem 1fr auto;
+  grid-template-areas:
+    'binder main      schedule'
+    'binder secondary running'
+    'binder fields    fields';
+
+  &.subscribed {
+    background-color: $gray-1250;
+  }
+
+  &.running {
+    border-top: 1px solid $gray-1300;
+    background-color: var(--operator-running-bg-override, $active-green);
+  }
+
+  &.past {
+    border-top: 1px solid transparent;
+    opacity: 0.2;
+  }
+}
+
+.binder {
+  grid-area: binder;
+  color: $section-white;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  position: relative;
+  background-color: $gray-1050; // to override inline
+  font-weight: 600;
+
+  .cue {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    width: 6em;
+
+    rotate: -90deg;
+    letter-spacing: 0.5px;
+  }
+}
+
+.mainField {
+  grid-area: main;
+  font-size: 1.5rem;
+  color: $ui-white;
+
+  @include ellipsis-text;
+}
+
+.secondaryField {
+  grid-area: secondary;
+  font-size: 1.25rem;
+  line-height: 1em;
+  // allow multi-line text but trim before
+  white-space: pre-line;
+}
+
+.plannedStart,
+.timeUntil,
+.runningTime {
+  border-radius: $component-border-radius-md;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+
+.plannedStart {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  display: inline;
+  background-color: $white-20;
+  letter-spacing: 1px;
+}
+
+.timeUntil {
+  grid-area: schedule;
+  font-size: calc(1rem - 2px);
+  justify-self: end;
+  background-color: $white-20;
+  letter-spacing: 1px;
+}
+
+.runningTime {
+  grid-area: running;
+  font-size: 1.25rem;
+  justify-self: end;
+  background-color: $white-7;
+}
+
+.fields {
+  grid-area: fields;
+  margin-top: 0;
+  border-top: 0;
+
+  .field {
+    font-weight: 600;
+    padding-inline: 0.25rem;
+  }
+
+  .noColour {
+    outline: 0.15rem solid $ui-white;
+    outline-offset: -0.15rem;
+    padding-right: 0.3rem;
+    color: $ui-white;
+  }
+
+  .value {
+    display: inline-flex;
+    padding-inline: 0.25rem;
+    background-color: $gray-1250;
+    color: $ui-white;
+    // allow multi-line text but trim before
+    white-space: pre-line;
+  }
+
+  &.fieldsWithContent {
+    margin-top: 0.25rem;
+    padding-block: 0.5rem;
+    border-top: 1px solid $white-13;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.25rem 0.75rem;
+    line-height: 1.25em;
+    font-size: var(--operator-customfield-font-size-override, 1.25rem);
+    font-weight: 400;
+    color: $ui-black;
+  }
+}

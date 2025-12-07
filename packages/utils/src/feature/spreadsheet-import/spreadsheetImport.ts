@@ -1,0 +1,38 @@
+export type ImportOptions = keyof typeof defaultImportMap | 'custom';
+export type ImportCustom = Record<string, string>;
+export type ImportMap = typeof defaultImportMap & { custom: ImportCustom };
+
+// Record of ontime name and import name
+export const defaultImportMap = {
+  worksheet: 'event schedule',
+  flag: 'flag',
+  timeStart: 'time start',
+  linkStart: 'link start',
+  timeEnd: 'time end',
+  duration: 'duration',
+  cue: 'cue',
+  title: 'title',
+  countToEnd: 'count to end',
+  skip: 'skip',
+  note: 'note',
+  colour: 'colour',
+  endAction: 'end action',
+  timerType: 'timer type',
+  timeWarning: 'warning time',
+  timeDanger: 'danger time',
+  custom: {},
+  id: 'id',
+};
+
+/**
+ * Validates whether an object is an Import Map
+ * @param obj
+ */
+export function isImportMap(obj: unknown): obj is ImportMap {
+  if (typeof obj !== 'object' || obj === null) {
+    return false;
+  }
+
+  const keys = Object.keys(defaultImportMap);
+  return keys.every((key) => Object.hasOwn(obj, key));
+}

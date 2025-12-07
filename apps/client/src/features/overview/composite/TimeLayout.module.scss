@@ -1,0 +1,68 @@
+.label {
+  color: $label-gray;
+  font-size: calc(1rem - 3px);
+}
+
+.clock {
+  text-align: left;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  min-width: 5em;
+  font-variant-numeric: tabular-nums;
+  color: $ui-white;
+
+  &::after {
+    content: '\200b';
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: end;
+
+  .label {
+    line-height: 0.9em;
+    width: 7em;
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .over,
+  .under {
+    transition: color 0.2s ease;
+  }
+
+  &[data-state='waiting'] {
+    .label {
+      color: $ontime-roll;
+    }
+  }
+
+  &[data-state='over'] {
+    .label .over {
+      color: $playback-over;
+      font-weight: 600;
+    }
+    .clock {
+      color: $playback-over;
+    }
+  }
+
+  &[data-state='under'] {
+    .label .under {
+      color: $playback-under;
+      font-weight: 600;
+    }
+    .clock {
+      color: $playback-under;
+    }
+  }
+
+  &[data-state='muted'] {
+    .clock {
+      color: $muted-gray;
+    }
+  }
+}

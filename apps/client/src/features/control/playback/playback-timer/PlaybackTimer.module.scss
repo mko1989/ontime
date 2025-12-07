@@ -1,0 +1,111 @@
+.timeContainer {
+  display: grid;
+  grid-template-areas:
+    'indicators timer  addtime'
+    'status     status addtime';
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1.25rem 1fr 6.5rem;
+  gap: $element-inner-spacing;
+}
+
+.timeContainerWithMessage {
+  grid-template-areas:
+    'indicators timer message addtime'
+    'status     status status addtime' !important;
+  grid-template-columns: 1.25rem auto 1fr 6.5rem !important;
+}
+
+// ---------> INDICATORS
+
+.indicators {
+  grid-area: indicators;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.indicatorRoll,
+.indicatorDelay,
+.indicatorNegative {
+  background-color: $black-10;
+}
+
+.indicatorRoll,
+.indicatorDelay {
+  margin: 0 auto;
+  border-radius: 5px;
+  width: 10px;
+  height: 10px;
+}
+
+.indicatorRoll[data-active='true'] {
+  background-color: $ontime-roll;
+}
+
+.indicatorDelay[data-active='true'] {
+  background-color: $ontime-delay;
+}
+
+.indicatorNegative {
+  margin: 0 auto;
+  width: 90%;
+  height: 0.25rem;
+
+  &[data-active='true'] {
+    background-color: $playback-negative;
+  }
+}
+
+// ---------> LABELS
+
+.status {
+  grid-area: status;
+  height: 1.5rem;
+  display: flex;
+  gap: $section-spacing;
+}
+
+.tag {
+  color: $label-gray;
+  font-size: calc(1rem - 2px);
+  margin-right: 0.25rem;
+}
+
+.time {
+  color: $section-white;
+  font-size: $text-body-size;
+  display: inline-block;
+}
+
+.rolltag {
+  color: $ontime-roll;
+  font-size: $text-body-size;
+}
+
+.timerWrapper {
+  grid-area: timer;
+  min-width: 0;
+  max-width: 18.75rem;
+  display: flex;
+  align-items: center;
+  
+  // Override TimerDisplay styles using more specific selector
+  div {
+    grid-area: unset !important;
+    max-width: 100% !important;
+    width: auto !important;
+  }
+}
+
+.messageContainer {
+  grid-area: message;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

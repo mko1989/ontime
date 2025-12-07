@@ -1,0 +1,49 @@
+@use '../../views/editor/EditorMixin' as editor;
+
+.rundownExport {
+  height: 100%;
+  flex: 1 1 auto; /* flex-grow: 1, flex-shrink: 1, flex-basis: auto */
+
+  &.extracted {
+    .list {
+      flex: 1;
+      max-width: none;
+    }
+    .side {
+      flex: 1;
+      max-width: none;
+    }
+  }
+}
+
+.rundown {
+  display: flex;
+  max-height: 100%;
+  height: 100%;
+}
+
+.list {
+  @include editor.panel;
+  height: inherit;
+  padding-inline: 0;
+  box-shadow: $box-shadow-right;
+
+  flex: 1 1 0; /* flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+  min-width: 38rem;
+  max-width: none;
+  width: 0;
+}
+
+.side {
+  max-height: 100%;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  padding-right: 0;
+  background-color: $gray-1325;
+  border-radius: 0 8px 8px 0;
+
+  flex: 1 1 0; /* flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+  // width is locked to swatch picker elements
+  min-width: calc(15 * 2rem + 13 * 0.5rem);
+  width: 0;
+}

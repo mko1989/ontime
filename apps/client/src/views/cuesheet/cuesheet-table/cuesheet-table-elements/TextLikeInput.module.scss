@@ -1,0 +1,34 @@
+/* element matching input styles */
+.textInput {
+  height: 2rem;
+  background-color: transparent;
+  border-radius: $component-border-radius-md;
+  text-wrap: nowrap;
+
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  letter-spacing: 0.5px;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+
+  overflow: hidden;
+
+  &.under {
+    color: $playback-under;
+  }
+
+  &.over {
+    color: $playback-over;
+  }
+
+  &.muted {
+    // we use opacity instead of colour to handle delayed values
+    opacity: 0.4;
+  }
+
+  &:hover:not(.disabled) {
+    background-color: $gray-1100;
+    cursor: text;
+  }
+}

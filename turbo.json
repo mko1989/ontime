@@ -1,0 +1,55 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "NODE_ENV",
+    "GITHUB_TOKEN",
+    "APPLEID",
+    "APPLEIDPASS",
+    "TEAMID",
+    "CSC_KEY_PASSWORD",
+    "CSC_LINK",
+    "SENTRY_AUTH_TOKEN"
+  ],
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "env": ["ROUTER_PREFIX", "IS_CLOUD"]
+    },
+    "dev:electron": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev:inspect": {
+      "cache": false,
+      "persistent": true
+    },
+
+    "test": {},
+    "test:pipeline": {},
+
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "build/**"]
+    },
+
+    "dist-win": {
+      "dependsOn": ["build"],
+      "outputs": ["dist/**"]
+    },
+    "dist-mac": {
+      "dependsOn": ["build"],
+      "outputs": ["dist/**"]
+    },
+    "dist-linux": {
+      "dependsOn": ["build"],
+      "outputs": ["dist/**"]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "ontime",
+  "version": "4.2.5",
+  "description": "Time keeping for live events",
+  "keywords": [
+    "ontime",
+    "timer",
+    "rundown"
+  ],
+  "author": "Carlos Valente",
+  "homepage": "https://www.getontime.no/",
+  "repository": "https://github.com/cpvalente/ontime",
+  "bugs": {
+    "url": "https://github.com/cpvalente/ontime/issues",
+    "email": "mail@getontime.no"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": "~22",
+    "pnpm": "~10"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:prefix": "cross-env ROUTER_PREFIX=test cross-env IS_CLOUD=True turbo run dev --filter=ontime-server",
+    "dev:electron": "turbo run dev:electron",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "build": "turbo run build",
+    "build:docker": "cross-env NODE_ENV=docker turbo run build --filter=ontime-server --filter=ontime-ui",
+    "build:resolver": "turbo run build --filter=@getontime/resolver",
+    "dist-win": "turbo run dist-win",
+    "dist-mac": "turbo run dist-mac",
+    "dist-linux": "turbo run dist-linux",
+    "e2e": "turbo run build --filter=ontime-ui && pnpm clear-temp && cross-env DEBUG=pw:webserver npx playwright test -c playwright.config.ts",
+    "e2e:ui": "cross-env NODE_ENV=development cross-env DEBUG=pw:webserver npx playwright test --ui -c playwright.config.ts",
+    "e2e:i": "npx playwright codegen",
+    "clear-temp": "rimraf e2e/tests/fixtures/tmp",
+    "test": "turbo run test:pipeline"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/node": "catalog:",
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
+    "cross-env": "^7.0.3",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-playwright": "^1.5.2",
+    "eslint-plugin-prettier": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "turbo": "2.5.8",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@10.18.0+sha512.e804f889f1cecc40d572db084eec3e4881739f8dec69c0ff10d2d1beff9a4e309383ba27b5b750059d7f4c149535b6cd0d2cb1ed3aeb739239a4284a68f40cfa"
+}

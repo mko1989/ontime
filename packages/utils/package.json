@@ -1,0 +1,29 @@
+{
+  "name": "ontime-utils",
+  "type": "module",
+  "exports": "./index.ts",
+  "private": true,
+  "description": "shared logic for ontime",
+  "scripts": {
+    "lint": "eslint . --quiet",
+    "test": "vitest",
+    "test:pipeline": "vitest run"
+  },
+  "dependencies": {
+    "deepmerge-ts": "^7.0.3",
+    "nanoid": "^5.0.7"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-prettier": "catalog:",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "ontime-types": "workspace:*",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "sideEffects": false
+}

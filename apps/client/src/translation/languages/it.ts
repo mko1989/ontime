@@ -1,0 +1,32 @@
+import { TranslationObject } from 'ontime-types';
+
+export const langIt: TranslationObject = {
+  'common.expected_finish': 'Fine Prevista',
+  'common.minutes': 'min',
+  'common.seconds': 'sec',
+  'common.now': 'Adesso',
+  'common.next': 'Prossimo',
+  'common.scheduled_start': 'Inizio programmato',
+  'common.scheduled_end': 'Fine programmata',
+  'common.expected_start': 'Inizio previsto',
+  'common.expected_end': 'Fine prevista',
+  'common.stage_timer': 'Orologio Palco',
+  'common.started_at': 'Iniziato Alle',
+  'common.time_now': 'Ora attuale',
+  'common.no_data': 'Nessun dato disponibile',
+  'countdown.ended': 'Evento finito alle',
+  'countdown.running': 'Evento in corso',
+  'countdown.loaded': 'Evento caricato', //TODO: check translation
+  'countdown.select_event': 'Seleziona un evento da seguire',
+  'countdown.to_start': 'Tempo alla partenza',
+  'countdown.waiting': "In attesa dell'inizio dell'evento",
+  'countdown.overtime': 'in ritardo',
+  'timeline.live': 'live',
+  'timeline.done': 'Terminato',
+  'timeline.due': 'previsto',
+  'timeline.followedby': 'Seguito da',
+  'project.title': 'Titolo',
+  'project.description': 'Descrizione',
+  'project.info': 'Informazioni sul progetto',
+  'project.url': 'URL del progetto',
+};

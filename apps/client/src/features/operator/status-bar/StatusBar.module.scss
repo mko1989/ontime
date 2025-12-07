@@ -1,0 +1,49 @@
+.statusBar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: $zindex-floating;
+  background-color: $gray-1350;
+}
+
+.timers {
+  padding-block: 1rem 0.5rem;
+  padding-inline: 1rem 0.5rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: '. timers clock';
+}
+
+.runningTimer {
+  grid-area: timers;
+  justify-self: center;
+
+  :nth-child(2) {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+}
+
+.timeNow {
+  grid-area: clock;
+  justify-self: right;
+
+  :nth-child(2) {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+}
+
+.progressOverride {
+  grid-area: bar;
+  height: 1rem;
+  --progress-bar-br: 0;
+}
+
+@media (max-width: $min-tablet) {
+  .timers {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'timers clock';
+  }
+}

@@ -1,0 +1,258 @@
+import {
+  Automation,
+  AutomationFilter,
+  AutomationOutput,
+  HTTPOutput,
+  OntimeAction,
+  OSCOutput,
+  SecondarySource,
+  timerLifecycleValues,
+} from 'ontime-types';
+
+import { body, oneOf, param } from 'express-validator';
+
+import * as assert from '../../utils/assert.js';
+
+import { isFilterOperator, isFilterRule, isOntimeActionAction } from './automation.utils.js';
+import { requestValidationFunction } from '../validation-utils/validationFunction.js';
+
+export const validateAutomationSettings = [
+  body('enabledAutomations').isBoolean(),
+  body('enabledOscIn').isBoolean(),
+  body('oscPortIn').isPort(),
+  body('triggers').optional().isArray(),
+  body('triggers.*.title').optional().isString().trim(),
+  body('triggers.*.trigger').optional().isIn(timerLifecycleValues),
+  body('triggers.*.automationId').optional().isString().trim(),
+  body('automations').optional().custom(parseAutomation),
+
+  requestValidationFunction,
+];
+
+export const validateTrigger = [
+  body('title').isString().trim().notEmpty(),
+  body('trigger').isIn(timerLifecycleValues),
+  body('automationId').isString().trim().notEmpty(),
+
+  requestValidationFunction,
+];
+
+export const validateTriggerPatch = [
+  param('id').isString().notEmpty(),
+  body('title').optional().isString().trim().notEmpty(),
+  body('trigger').optional().isIn(timerLifecycleValues),
+  body('automationId').optional().isString().trim().notEmpty(),
+
+  requestValidationFunction,
+];
+
+export const validateAutomation = [body().custom(parseAutomation), requestValidationFunction];
+
+export const validateAutomationPatch = [
+  param('id').isString().notEmpty(),
+  body().custom(parseAutomation),
+
+  requestValidationFunction,
+];
+
+/**
+ * Parses and validates a use given automation
+ */
+export function parseAutomation(maybeAutomation: unknown): Automation {
+  assert.isObject(maybeAutomation);
+  assert.hasKeys(maybeAutomation, ['title', 'filterRule', 'filters', 'outputs']);
+
+  const { title, filterRule, filters, outputs } = maybeAutomation;
+  assert.isString(title);
+  assert.isString(filterRule);
+  if (!isFilterRule(filterRule)) {
+    throw new Error(`Invalid automation: unknown filter rule ${filterRule}`);
+  }
+  assert.isArray(filters);
+  validateFilters(filters);
+
+  assert.isArray(outputs);
+  validateOutput(outputs);
+
+  return maybeAutomation as Automation;
+}
+
+function validateFilters(filters: Array<unknown>): filters is AutomationFilter[] {
+  filters.forEach((condition) => {
+    assert.isObject(condition);
+
+    assert.hasKeys(condition, ['field', 'operator', 'value']);
+    const { field, operator, value } = condition;
+    assert.isString(field);
+    assert.isString(operator);
+    assert.isString(value);
+    if (!isFilterOperator(operator)) {
+      throw new Error(`Invalid automation: unknown filter operator ${operator}`);
+    }
+
+    if (typeof value !== 'string' && typeof value !== 'number' && typeof value !== 'boolean') {
+      throw new Error(`Invalid automation: unhandled filter type ${typeof value}`);
+    }
+  });
+  return true;
+}
+
+function validateOutput(output: Array<unknown>): output is AutomationOutput[] {
+  output.forEach((payload) => {
+    parseOutput(payload);
+  });
+  return true;
+}
+
+export const validateTestPayload = [
+  body('type').isIn(['osc', 'http', 'ontime']),
+
+  // validation for OSC message
+  oneOf([
+    body('targetIP').if(body('type').equals('osc')).isIP(),
+    body('targetIP').if(body('type').equals('osc')).isFQDN(),
+    body('targetIP').if(body('type').equals('osc')).equals('localhost'),
+  ]),
+  body('targetPort').if(body('type').equals('osc')).isPort(),
+  body('address').if(body('type').equals('osc')).isString().trim(),
+  body('args').if(body('type').equals('osc')).isString().trim(),
+
+  // validation for HTTP message
+  body('url').if(body('type').equals('http')).isURL({ require_tld: false }).trim(),
+
+  // validation for Ontime actions
+  body('action').if(body('type').equals('ontime')).isString().trim(),
+  body('text').if(body('type').equals('ontime')).optional().isString().trim(),
+  body('time').if(body('type').equals('ontime')).optional().isString().trim(),
+  body('visible').if(body('type').equals('ontime')).optional().isString().trim(),
+  body('secondarySource').if(body('type').equals('ontime')).optional().isString().trim(),
+
+  requestValidationFunction,
+];
+
+/**
+ * Sanitises an output object
+ * @Throws if the output is invalid
+ */
+export function parseOutput(maybeOutput: unknown): AutomationOutput {
+  assert.isObject(maybeOutput);
+  assert.hasKeys(maybeOutput, ['type']);
+
+  const { type } = maybeOutput;
+  assert.isString(type);
+
+  if (type === 'osc') {
+    return parseOSCOutput(maybeOutput);
+  } else if (type === 'http') {
+    return parseHTTPOutput(maybeOutput);
+  } else if (type === 'ontime') {
+    return parseOntimeAction(maybeOutput);
+  } else {
+    throw new Error('Invalid automation output');
+  }
+}
+
+function parseOSCOutput(maybeOSCOutput: object): OSCOutput {
+  assert.hasKeys(maybeOSCOutput, ['targetIP', 'targetPort', 'address', 'args']);
+  assert.isString(maybeOSCOutput.targetIP);
+  assert.isNumber(maybeOSCOutput.targetPort);
+  assert.isString(maybeOSCOutput.address);
+  assert.isString(maybeOSCOutput.args);
+
+  return {
+    type: 'osc',
+    targetIP: maybeOSCOutput.targetIP,
+    targetPort: maybeOSCOutput.targetPort,
+    address: maybeOSCOutput.address,
+    args: maybeOSCOutput.args,
+  };
+}
+
+function parseHTTPOutput(maybeHTTPOutput: object): HTTPOutput {
+  assert.hasKeys(maybeHTTPOutput, ['url']);
+  assert.isString(maybeHTTPOutput.url);
+
+  return {
+    type: 'http',
+    url: maybeHTTPOutput.url,
+  };
+}
+
+function parseOntimeAction(maybeOntimeAction: object): OntimeAction {
+  assert.hasKeys(maybeOntimeAction, ['action']);
+  assert.isString(maybeOntimeAction.action);
+
+  if (!isOntimeActionAction(maybeOntimeAction.action)) {
+    throw new Error('Invalid Ontime action');
+  }
+
+  // we know we have a valid action, deal with special cases
+
+  if (
+    maybeOntimeAction.action === 'aux1-set' ||
+    maybeOntimeAction.action === 'aux2-set' ||
+    maybeOntimeAction.action === 'aux3-set'
+  ) {
+    assert.hasKeys(maybeOntimeAction, ['time']);
+    assert.isString(maybeOntimeAction.time);
+
+    return {
+      type: 'ontime',
+      action: maybeOntimeAction.action,
+      time: maybeOntimeAction.time,
+    };
+  }
+
+  if (maybeOntimeAction.action === 'message-set') {
+    assert.hasKeys(maybeOntimeAction, ['text']);
+    assert.isString(maybeOntimeAction.text);
+    let visible: boolean | undefined = undefined;
+    if ('visible' in maybeOntimeAction) {
+      assert.isBoolean(maybeOntimeAction.visible);
+      visible = maybeOntimeAction.visible;
+    }
+
+    return {
+      type: 'ontime',
+      action: 'message-set',
+      text: indeterminateText(maybeOntimeAction.text),
+      visible,
+    };
+  }
+
+  if (maybeOntimeAction.action === 'message-secondary') {
+    assert.hasKeys(maybeOntimeAction, ['secondarySource']);
+    assert.isString(maybeOntimeAction.secondarySource);
+
+    return {
+      type: 'ontime',
+      action: 'message-secondary',
+      secondarySource: chooseSecondarySource(maybeOntimeAction.secondarySource),
+    };
+  }
+
+  return {
+    type: 'ontime',
+    action: maybeOntimeAction.action,
+  };
+}
+
+/**
+ * Helper function to parse a text which may be indeterminate
+ * "some text" -> string
+ * "" -> undefined
+ */
+function indeterminateText(value: string): string | undefined {
+  return value === '' ? undefined : value;
+}
+
+/**
+ * Helper function to validate the secondary source
+ */
+function chooseSecondarySource(value: string): SecondarySource {
+  if (value === 'aux1') return 'aux1';
+  if (value === 'aux2') return 'aux2';
+  if (value === 'aux3') return 'aux3';
+  if (value === 'secondary') return 'secondary';
+  return null;
+}

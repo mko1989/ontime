@@ -1,0 +1,14 @@
+.titleEditor {
+  display: block;
+  font-size: calc(1rem + 2px);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.noTitle {
+  .preview {
+    opacity: $opacity-disabled;
+  }
+}

@@ -1,0 +1,44 @@
+@use '@/theme/viewerDefs' as *;
+@import './BaseButtonStyles.module.scss';
+
+.baseIconButton {
+  aspect-ratio: 1;
+  display: grid;
+  place-content: center;
+
+  border: 1px solid transparent;
+  border-radius: $component-border-radius-md;
+
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $blue-500;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.small {
+  height: 1.5rem;
+  font-size: calc(1rem - 3px);
+}
+
+.medium {
+  height: 2rem;
+  width: 2rem;
+}
+
+.large {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.xlarge {
+  height: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+}

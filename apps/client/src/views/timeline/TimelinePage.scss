@@ -1,0 +1,131 @@
+@use '@/theme/viewerDefs' as *;
+
+.timeline {
+  margin: 0;
+  box-sizing: border-box; /* reset */
+  overflow: hidden;
+  width: 100%; /* restrict the page width to viewport */
+  height: 100vh;
+
+  font-family: var(--font-family-override, $viewer-font-family);
+  background: var(--background-color-override, $viewer-background-color);
+  color: var(--color-override, $viewer-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: $view-element-gap;
+
+  .project-header {
+    padding: $view-outer-padding;
+    font-size: $header-font-size;
+    font-weight: 600;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .logo {
+    max-width: min(200px, 20vw);
+  }
+
+  .title {
+    line-height: 1.1em;
+  }
+
+  .clock-container {
+    margin-left: auto;
+    font-weight: 600;
+
+    .label {
+      font-size: $timer-label-size;
+      color: var(--label-color-override, $viewer-label-color);
+      text-transform: uppercase;
+    }
+
+    .time {
+      font-size: $timer-value-size;
+      color: var(--secondary-color-override, $viewer-secondary-color);
+      letter-spacing: 0.05em;
+      line-height: 0.95em;
+    }
+  }
+
+  .title-grid {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    row-gap: 1rem;
+    column-gap: 2rem;
+    grid-template-areas:
+      'now next'
+      'now following';
+    padding-inline: 2rem;
+  }
+
+  .section {
+    background-color: var(--card-background-color-override, $viewer-card-bg-color);
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-radius: $element-border-radius;
+  }
+
+  .section--now {
+    grid-area: now;
+  }
+
+  .section-title {
+    line-height: 1;
+    font-size: $base-font-size;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+
+  .section-title__label {
+    font-size: $timer-label-size;
+    color: var(--label-color-override, $viewer-label-color);
+    text-transform: uppercase;
+  }
+
+  .section-title__status {
+    color: $green-500;
+  }
+
+  .section-content {
+    min-height: 2em;
+    line-height: 1em;
+    font-size: $timer-value-size;
+    text-transform: uppercase;
+    font-weight: 600;
+
+    max-height: 2em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .section-content--now {
+    color: $red-500;
+  }
+
+  .section-content--followedBy .section-content--next {
+    color: $green-500;
+  }
+
+  .section-content--subdue {
+    opacity: $opacity-disabled;
+  }
+}
+
+@media (max-width: $min-tablet) {
+  .timeline {
+    .title-grid {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.common.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowUnusedLabels": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "allowJs": true,
+    "baseUrl": "src",
+    "types": ["vitest/globals"]
+  },
+  "include": [
+    "src",
+    "../node_modules/.pnpm/vitest@0.26.3/node_modules/vitest/globals.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}

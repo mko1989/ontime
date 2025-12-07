@@ -1,0 +1,58 @@
+@use '@/theme/viewerDefs' as *;
+
+$progress-bar-size: 1.5rem;
+$progress-bar-br: 3px;
+
+.multiprogress-bar {
+  position: relative;
+  width: 100%;
+  height: $progress-bar-size;
+
+  &--hidden {
+    display: none;
+    transition: display 0.5s;
+  }
+}
+
+.multiprogress-bar__bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--progress-bar-br, $progress-bar-br);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.multiprogress-bar__indicator {
+  position: absolute;
+  inset: 0;
+  margin: -1px;
+  margin-left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.multiprogress-bar__indicator-bar {
+  background-color: var(--background-color-override, $ui-black);
+  opacity: 0.8;
+  transition: 1s linear;
+  transition-property: width;
+
+  .multiprogress-bar--ignore-css-override & {
+    background-color: $ui-black;
+  }
+}
+
+.multiprogress-bar__bg-normal {
+  flex: 1;
+}
+
+.multiprogress-bar__bg-danger {
+  flex-shrink: 0;
+}
+.multiprogress-bar__bg-danger--overtime {
+  background: var(--timer-overtime-color-override, $timer-finished-color);
+}

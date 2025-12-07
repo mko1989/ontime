@@ -1,0 +1,53 @@
+$info-gray: $secondary-text-gray;
+$info-hover: $section-white;
+
+.log {
+  font-size: $inner-section-text-size;
+  overflow-y: auto;
+  user-select: text;
+  min-height: 20vh;
+  max-height: 40vh;
+  background-color: $gray-1350;
+  padding: 0.5rem;
+}
+
+.apart {
+  margin-left: auto;
+}
+
+.logEntry {
+  display: flex;
+
+  &.INFO {
+    color: $info-gray;
+  }
+
+  &.WARN {
+    color: $warning-orange;
+  }
+
+  &.ERROR {
+    color: $error-red;
+  }
+
+  &:hover {
+    color: $info-hover;
+  }
+
+  .time {
+    width: 4.5em;
+  }
+
+  .origin {
+    width: 6em;
+  }
+
+  .msg {
+    flex: 1;
+  }
+}
+
+.buttonBar {
+  flex-wrap: wrap;
+  padding-bottom: 0.5rem;
+}

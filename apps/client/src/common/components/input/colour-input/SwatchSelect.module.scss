@@ -1,0 +1,29 @@
+.list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.swatch {
+  width: 2rem;
+  height: 2rem;
+  aspect-ratio: 1;
+  border-radius: 99px;
+  border: 2px solid $gray-1200;
+  color: $ui-white;
+
+  display: grid;
+  place-content: center;
+
+  &.selected {
+    border: 2px solid $blue-500;
+  }
+
+  &.selectable {
+    cursor: pointer;
+
+    &:hover {
+      border: 2px solid $blue-300;
+    }
+  }
+}

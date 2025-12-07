@@ -1,0 +1,89 @@
+@use '@/theme/viewerDefs' as *;
+
+.project {
+  margin: 0;
+  box-sizing: border-box; /* reset */
+  overflow: hidden;
+  width: 100%; /* restrict the page width to viewport */
+  height: 100vh;
+
+  font-family: var(--font-family-override, $viewer-font-family);
+  background: var(--background-color-override, $viewer-background-color);
+  color: var(--color-override, $viewer-color);
+  padding: $view-outer-padding;
+  font-size: $base-font-size;
+
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    max-width: min(200px, 30vw);
+  }
+
+  .info {
+    flex: 1;
+    max-height: 100%;
+    margin-inline: auto;
+    overflow-y: auto;
+    width: min(calc(100vw - 4rem), 960px);
+    display: flex;
+    flex-direction: column;  
+    align-items: start;
+    gap: $view-element-gap;
+
+    padding-bottom: 10vh;
+  }
+
+  .info__label {
+    font-weight: 600;
+    color: var(--label-color-override, $viewer-label-color);
+    text-transform: uppercase;
+  }
+
+  .info__value {
+    white-space: break-spaces;
+  }
+
+  .info__custom {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .info__image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 192px;
+    height: 192px;
+  }
+
+  .info__image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .link.info__value {
+    display: flex;
+    gap: $view-element-gap;
+    align-items: center;
+    color: $action-text-color;
+
+    &:hover {
+      color: $ontime-color;
+    }
+  }
+}
+
+/* =================== MOBILE ===================*/
+@media screen and (max-width: 768px) {
+  .project {
+    .logo img {
+      height: min(50px, 10vh);
+    }
+    .info__image-container {
+      width: 96px;
+      height: 96px;
+    }
+  }
+}

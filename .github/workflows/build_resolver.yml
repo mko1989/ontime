@@ -1,0 +1,48 @@
+name: Ontime Resolver build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_resolver:
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # This step is only needed to setup the permissions to update npm as pnpm will setup the correct node version
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        run: echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build project packages
+        run: pnpm build:resolver
+
+      # This will be included in v24 of NodeJS so when the project upgrades to that this can be removed
+      - name: Install newer version of npm
+        run: npm install -g npm@11
+
+      - name: Publish to NPM
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NPM_CONFIG_PROVENANCE: true
+        working-directory: ./apps/resolver

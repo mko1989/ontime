@@ -1,0 +1,53 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# misc
+.DS_Store
+*.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# vscode stuff
+.vscode/*
+ontime.code-workspace
+
+# webstorm stuff
+.idea/*
+
+# turborepo stuff
+.turbo
+
+# testing
+test-results
+playwright-report
+/playwright/.cache/
+automated-screenshots
+e2e/tests/fixtures/tmp/*
+
+# production
+build/
+dist/
+
+# bundled assets
+translations.json
+override.css
+
+# working stuff
+**/TODO.md
+
+# docker utils
+ontime-db
+ontime-external/
+ontime-data/
+
+# versioning file
+**/ONTIME_VERSION.js
+
+# temporary write files
+**.tmp

@@ -1,0 +1,45 @@
+.operatorContainer {
+  width: 100vw;
+  height: 100vh;
+
+  background-color: $ui-black;
+  color: $ui-white;
+}
+
+.operatorEvents {
+  width: 100vw;
+  height: 100vh;
+  padding-top: 0.25rem;
+
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 95vh;
+}
+
+.editPrompt {
+  position: fixed;
+  z-index: $zindex-dialog;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+
+  background: $backdrop-color;
+  border-radius: 2px;
+  padding: 0.5em 2em;
+  color: $orange-500;
+
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+.schedule {
+  display: flex;
+  gap: 0.25em;
+}

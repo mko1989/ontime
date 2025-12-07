@@ -1,0 +1,40 @@
+.fourtyfive {
+  transform: rotate(-45deg);
+}
+
+.timerNote {
+  width: 1.25em;
+  color: $blue-500;
+  font-size: 1.5em;
+}
+
+.inactive {
+  color: $muted-gray;
+}
+
+.active {
+  color: $active-indicator;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.hoverLabel {
+  position: absolute;
+  top: -1.5rem;
+  background-color: $ui-white;
+  padding: 0.125rem 0.5rem;
+  color: $ui-black;
+  left: 0;
+  opacity: 0;
+  border-radius: $component-border-radius-md;
+  transition: opacity 0.15s ease;  // no delay on fade out
+  pointer-events: none;
+  z-index: $zindex-floating;
+
+  &.visible {
+    opacity: 1;
+    transition: opacity 0.15s 0.5s ease; // small delay before fade in
+  }
+}

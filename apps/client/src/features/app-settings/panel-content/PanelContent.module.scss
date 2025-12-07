@@ -1,0 +1,21 @@
+.corner {
+  position: fixed;
+  top: 6rem;
+  right: 4rem;
+  z-index: $zindex-floating;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.content {
+  margin: 1rem;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-bottom: 300px;
+}

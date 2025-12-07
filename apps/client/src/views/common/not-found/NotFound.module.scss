@@ -1,0 +1,17 @@
+@use '@/theme/viewerDefs' as *;
+
+.notFound {
+  display: grid;
+  height: 100vh;
+  padding-top: 20vh;
+  background-color: var(--background-color-override, $viewer-background-color);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+
+  color: $ui-white;
+  align-items: center;
+  text-align: center;
+}

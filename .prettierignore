@@ -1,0 +1,14 @@
+build
+coverage
+dist
+node_modules
+
+playwright-report
+
+
+pnpm-lock.yaml
+**/*.toml
+**/*.json
+!tsconfig.common.json
+!turbo.json
+!package.json

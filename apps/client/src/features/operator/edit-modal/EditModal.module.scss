@@ -1,0 +1,49 @@
+.editModal {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding-inline: 1rem;
+  min-width: min(720px, 90vw);
+  
+  background-color: $gray-1250;
+  color: $ui-white;
+  border-radius: 3px;
+  box-shadow: $box-shadow-l1;
+  border: 1px solid $gray-1100;
+}
+
+.title {
+  font-size: 1.25rem;
+  padding-block: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  max-height: min(60vh, 600px);
+  overflow-y: auto;
+}
+
+.label {
+  background-color: var(--user-bg, $gray-900);
+  width: fit-content;
+  padding-inline: 1rem;
+}
+
+.footer {
+  padding-block: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 1rem;
+}

@@ -1,0 +1,18 @@
+.emptyContainer {
+  width: 100%;
+  text-align: center;
+  color: $white-10;
+
+  .empty {
+    width: 100%;
+    opacity: 0.8;
+  }
+
+  .text {
+    display: block;
+    margin-inline: auto;;
+    font-weight: 600;
+    font-size: 2em;
+    max-width: 600px;
+  }
+}

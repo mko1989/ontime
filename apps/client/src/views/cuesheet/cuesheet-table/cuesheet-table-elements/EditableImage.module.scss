@@ -1,0 +1,34 @@
+.imageInput {
+  &:not(:read-only)::placeholder {
+    opacity: 0.2;
+  }
+  &:not(:read-only):hover::placeholder {
+    opacity: 1;
+  }
+}
+
+.imageCell {
+  position: relative;
+  min-height: 2rem;
+
+  &:hover {
+    .overlay {
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      gap: 1rem;
+      background-color: $black-60;
+    }
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.image {
+  background-color: $gray-1350;
+  min-height: 2rem;
+}

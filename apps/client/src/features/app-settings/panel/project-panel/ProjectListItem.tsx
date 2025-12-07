@@ -1,0 +1,218 @@
+import { useState } from 'react';
+import {
+  IoCopyOutline,
+  IoDocumentOutline,
+  IoDownloadOutline,
+  IoEllipsisHorizontal,
+  IoPencilOutline,
+  IoTrash,
+} from 'react-icons/io5';
+
+import {
+  deleteProject,
+  downloadProject,
+  duplicateProject,
+  loadProject,
+  renameProject,
+} from '../../../../common/api/db';
+import { invalidateAllCaches, maybeAxiosError } from '../../../../common/api/utils';
+import IconButton from '../../../../common/components/buttons/IconButton';
+import { DropdownMenu } from '../../../../common/components/dropdown-menu/DropdownMenu';
+import { cx } from '../../../../common/utils/styleUtils';
+import * as Panel from '../../panel-utils/PanelUtils';
+
+import ProjectForm, { ProjectFormValues } from './ProjectForm';
+import ProjectMergeForm from './ProjectMergeForm';
+
+import style from './ProjectPanel.module.scss';
+
+export type EditMode = 'rename' | 'duplicate' | 'merge' | null;
+
+interface ProjectListItemProps {
+  current?: boolean;
+  filename: string;
+  updatedAt: string;
+  onToggleEditMode: (editMode: EditMode, filename: string | null) => void;
+  onSubmit: () => void;
+  onRefetch: () => Promise<void>;
+  editingFilename: string | null;
+  editingMode: EditMode | null;
+}
+
+export default function ProjectListItem({
+  current,
+  updatedAt,
+  editingFilename,
+  editingMode,
+  filename,
+  onRefetch,
+  onSubmit,
+  onToggleEditMode,
+}: ProjectListItemProps) {
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmitAction = (actionType: 'rename' | 'duplicate') => {
+    return async (values: ProjectFormValues) => {
+      setLoading(true);
+      setSubmitError(null);
+      try {
+        if (!values.filename) {
+          setSubmitError('Filename cannot be blank');
+          return;
+        }
+        const action = actionType === 'rename' ? renameProject : duplicateProject;
+        await action(filename, values.filename);
+        await onRefetch();
+        onSubmit();
+      } catch (error) {
+        setSubmitError(maybeAxiosError(error));
+      } finally {
+        setLoading(false);
+      }
+    };
+  };
+
+  const handleLoad = async (filename: string) => {
+    setLoading(true);
+    setSubmitError(null);
+    try {
+      await loadProject(filename);
+      await onRefetch();
+      await invalidateAllCaches();
+    } catch (error) {
+      setSubmitError(maybeAxiosError(error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (filename: string) => {
+    setLoading(true);
+    setSubmitError(null);
+    try {
+      await deleteProject(filename);
+      await onRefetch();
+    } catch (error) {
+      setSubmitError(maybeAxiosError(error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleToggleEditMode = (editMode: EditMode, filename: string | null) => {
+    setSubmitError(null);
+    onToggleEditMode(editMode, filename);
+  };
+
+  const handleCancel = () => {
+    handleToggleEditMode(null, null);
+  };
+
+  const isCurrentlyBeingEdited = filename === editingFilename;
+  const showProjectForm = (editingMode === 'rename' || editingMode === 'duplicate') && filename === editingFilename;
+  const showMergeForm = editingMode === 'merge' && isCurrentlyBeingEdited;
+  const classes = cx([current && !isCurrentlyBeingEdited && style.current, isCurrentlyBeingEdited && style.isEditing]);
+
+  return (
+    <>
+      {submitError && (
+        <tr key='filename-error'>
+          <td colSpan={99}>
+            <Panel.Error>{submitError}</Panel.Error>
+          </td>
+        </tr>
+      )}
+      <tr key={filename} className={classes}>
+        {showProjectForm ? (
+          <td colSpan={99}>
+            <ProjectForm
+              action={editingMode}
+              filename={filename}
+              onSubmit={editingMode === 'duplicate' ? handleSubmitAction('duplicate') : handleSubmitAction('rename')}
+              onCancel={handleCancel}
+            />
+          </td>
+        ) : (
+          <>
+            <td className={style.containCell}>{filename}</td>
+            <td>{current ? 'Currently loaded' : new Date(updatedAt).toLocaleString()}</td>
+            <td>
+              <ActionMenu
+                current={current}
+                filename={filename}
+                onChangeEditMode={handleToggleEditMode}
+                onDelete={handleDelete}
+                onLoad={handleLoad}
+                isDisabled={loading || showMergeForm}
+                onMerge={(filename) => handleToggleEditMode('merge', filename)}
+              />
+            </td>
+          </>
+        )}
+      </tr>
+      {showMergeForm && (
+        <tr>
+          <td colSpan={99}>
+            <ProjectMergeForm onClose={handleCancel} fileName={filename} />
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+interface ActionMenuProps {
+  current?: boolean;
+  filename: string;
+  isDisabled: boolean;
+  onChangeEditMode: (editMode: EditMode, filename: string) => void;
+  onDelete: (filename: string) => Promise<void>;
+  onLoad: (filename: string) => Promise<void>;
+  onMerge: (filename: string) => void;
+}
+function ActionMenu(props: ActionMenuProps) {
+  const { current, filename, isDisabled, onChangeEditMode, onDelete, onLoad, onMerge } = props;
+
+  const handleRename = () => {
+    onChangeEditMode('rename', filename);
+  };
+
+  const handleDuplicate = () => {
+    onChangeEditMode('duplicate', filename);
+  };
+
+  const handleDownload = async () => {
+    await downloadProject(filename);
+  };
+
+  return (
+    <DropdownMenu
+      render={<IconButton variant='ghosted-white' />}
+      disabled={isDisabled}
+      items={[
+        {
+          type: 'item',
+          icon: IoDownloadOutline,
+          label: 'Load',
+          onClick: () => onLoad(filename),
+          disabled: current,
+        },
+        {
+          type: 'item',
+          icon: IoDownloadOutline,
+          label: 'Partial Load',
+          onClick: () => onMerge(filename),
+          disabled: current,
+        },
+        { type: 'item', icon: IoPencilOutline, label: 'Rename', onClick: handleRename },
+        { type: 'item', icon: IoCopyOutline, label: 'Duplicate', onClick: handleDuplicate },
+        { type: 'item', icon: IoDocumentOutline, label: 'Download', onClick: handleDownload },
+        { type: 'divider' },
+        { type: 'item', icon: IoTrash, label: 'Delete', onClick: () => onDelete(filename), disabled: current },
+      ]}
+    >
+      <IoEllipsisHorizontal />
+    </DropdownMenu>
+  );
+}

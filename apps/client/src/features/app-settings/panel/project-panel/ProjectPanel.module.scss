@@ -1,0 +1,61 @@
+.current {
+  background-color: $blue-1100;
+}
+
+.isEditing {
+  color: $blue-500;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
+.formInput {
+  flex: 2;
+}
+
+.saveButton {
+  text-transform: capitalize;
+}
+
+.containCell {
+  max-width: 50%;
+}
+
+.sortableHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.innerColumn {
+  margin: 0 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.inlineLabels {
+  label {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+.warningInfo {
+  margin-bottom: 1rem;
+}
+
+.empty {
+  height: 300px;
+  position: relative;
+}

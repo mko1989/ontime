@@ -1,0 +1,30 @@
+import { DatabaseModel, AutomationSettings, NormalisedAutomation, Trigger } from 'ontime-types';
+
+import { dbModel } from '../../models/dataModel.js';
+import type { ErrorEmitter } from '../../utils/parserUtils.js';
+
+export function parseAutomationSettings(data: Partial<DatabaseModel>, emitError?: ErrorEmitter): AutomationSettings {
+  if (!data.automation) {
+    emitError?.('No data found to import');
+    return { ...dbModel.automation };
+  }
+  console.log('Found Automation settings, importing...');
+
+  return {
+    enabledAutomations: data.automation.enabledAutomations ?? dbModel.automation.enabledAutomations,
+    enabledOscIn: data.automation.enabledOscIn ?? dbModel.automation.enabledOscIn,
+    oscPortIn: data.automation.oscPortIn ?? dbModel.automation.oscPortIn,
+    triggers: parseTriggers(data.automation.triggers),
+    automations: parseAutomations(data.automation.automations),
+  };
+}
+
+function parseTriggers(maybeAutomations: unknown): Trigger[] {
+  if (!Array.isArray(maybeAutomations)) return [];
+  return maybeAutomations as Trigger[];
+}
+
+function parseAutomations(maybeAutomation: unknown): NormalisedAutomation {
+  if (typeof maybeAutomation !== 'object' || maybeAutomation === null) return {};
+  return maybeAutomation as NormalisedAutomation;
+}

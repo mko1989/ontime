@@ -1,0 +1,172 @@
+@use './theme/ontimeStyles' as *;
+
+/* open-sans-latin-300-normal */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src:
+    url(@fontsource/open-sans/files/open-sans-latin-300-normal.woff2) format('woff2'),
+    url(@fontsource/open-sans/files/open-sans-latin-300-normal.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* open-sans-latin-400-normal */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src:
+    url(@fontsource/open-sans/files/open-sans-latin-400-normal.woff2) format('woff2'),
+    url(@fontsource/open-sans/files/open-sans-latin-400-normal.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* open-sans-latin-600-normal */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:
+    url(@fontsource/open-sans/files/open-sans-latin-600-normal.woff2) format('woff2'),
+    url(@fontsource/open-sans/files/open-sans-latin-600-normal.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+$track-color: $white-1;
+$thumb-color: $white-20;
+$thumb-color-hover: $white-60;
+
+/* Apply a natural box layout model to all elements */
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-color: $thumb-color $track-color;
+  scrollbar-width: thin;
+}
+
+body,
+html {
+  font-size: 15px;
+  font-family: $ontime-font-family;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+body,
+html,
+.App {
+  margin: 0 auto;
+  overflow: hidden;
+  overflow: clip;
+  height: 100vh;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-app-region: drag;
+  isolation: isolate;
+}
+
+// reset button styles
+button {
+  all: unset;
+  box-sizing: border-box;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+table {
+  word-break: break-word;
+}
+
+// reset list styles
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+// remove buttons in number inputs
+/* WebKit and Blink */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* smaller root size for MacOS laptops */
+@media (max-width: 1600px) {
+  body,
+  html,
+  .App {
+    font-size: 14px;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $track-color;
+  border-radius: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $thumb-color;
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $thumb-color-hover;
+}

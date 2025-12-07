@@ -1,0 +1,17 @@
+@use 'ontimeStyles' as *;
+
+//////////////////////////////////// general app elements
+
+@mixin ellipsis-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin rotate-fourty-five {
+  transform: rotate(45deg);
+} 
+
+.fourtyfive {
+  @include rotate-fourty-five;
+}

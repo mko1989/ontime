@@ -1,0 +1,98 @@
+@use "./ontimeColours" as *;
+
+$transition-time-action: 0.1s;
+$transition-time-feedback: 0.3s;
+
+$component-border-radius-md: 3px;
+$component-border-radius-sm: 2px;
+$component-border-radius-full: 99px;
+
+// indexes
+$zindex-floating: 100;
+$zindex-nav: 200;
+$zindex-backdrop: 300;
+$zindex-dialog: 400;
+$zindex-modal: 500;
+$zindex-sudo: 1000;
+
+// semantic colours
+$action-blue: $blue-500;
+$action-text-color: $blue-400;
+$ontime-color: #ff7597;
+$error-red: $red-500;
+$warning-orange: $orange-500;
+$info-blue: $blue-500;
+$opacity-disabled: 0.4;
+$active-red: $red-700;
+$active-green: $green-700;
+
+// playback colours
+$playback-start: $green-600;
+$ontime-roll: #22a0e9;
+$ontime-delay: #F57C13;
+$ontime-delay-text: #E69056;
+$ontime-paused: #c05621;
+$ontime-stop: #E4281E;
+$playback-negative: $red-500;
+$playback-ahead: $green-500;
+$active-indicator: $green-400;
+$text-black: $gray-1350;
+
+$playback-over: #F57C13;
+$playback-under: $green-500;
+
+// interface panels
+$bg-container-l1: $gray-1350;
+$bg-container-l2: $gray-1300;
+
+$bg-container-onlight: $gray-100;
+
+$backdrop-color: rgba(0, 0, 0, 0.7);
+$box-shadow-l1: rgba(0, 0, 0, 0.15) 0 3px 3px 0;
+$box-shadow-l2: rgba(0, 0, 0, 0.15) 0 3px 3px 0;
+$box-shadow-right: rgba(0, 0, 0, 0.15) 3px 0 3px 0;
+$large-top-drawer-shadow: rgba(0, 0, 0, 0.35) 0 1px 6px 3px;
+
+$modal-note-color: $gray-700;
+
+// interface elements
+$border-color-ondark: $white-10;
+$element-inner-spacing: 0.25rem;
+$element-spacing: 0.5rem;
+$section-spacing: 1rem;
+$main-spacing: 2rem;
+
+// interface text
+$ontime-font-family: "Open Sans", "Segoe UI", sans-serif;
+$title-gray: $gray-200;
+$label-gray: $gray-600;
+$secondary-text-gray: $gray-400;
+$muted-gray: $gray-600;
+$section-white: $ui-white;
+$inner-section-text-size: calc(1rem - 2px);
+$text-body-size: calc(1rem - 1px);
+$aux-text-size: calc(1rem - 3px);
+
+// media queries
+$min-tablet: 500px;
+$small-screen: 800px;
+$small-desktop: 1440px;
+
+.blink {
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 100%;
+  }
+  50% {
+    opacity: 20%;
+  }
+}
+
+@mixin ellipsis-overflow() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

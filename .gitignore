@@ -51,3 +51,8 @@ ontime-data/
 
 # temporary write files
 **.tmp
+
+# TTS patch files (local only)
+tts/
+build-and-deploy.sh
+TTS_AND_DEPLOYMENT_GUIDE.md
